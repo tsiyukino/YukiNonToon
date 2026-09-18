@@ -1,0 +1,19 @@
+{
+  "name": "moe.tsiyuki.nontoon",
+  "displayName": "Yuki NonToon Converter",
+  "version": "0.1.0",
+  "unity": "2022.3",
+  "description": "Non-destructive lilToon to NonToon material conversion for VRChat avatars, applied at build time through NDMF.",
+  "author": {
+    "name": "TsiYuki",
+    "url": "https://github.com/tsiyukino"
+  },
+  "license": "MIT",
+  "documentationUrl": "https://github.com/tsiyukino/YukiNonToon",
+  "changelogUrl": "https://github.com/tsiyukino/YukiNonToon/blob/main/CHANGELOG.md",
+  "vpmDependencies": {
+    "com.vrchat.avatars": ">=3.7.0",
+    "nadena.dev.ndmf": ">=1.8.0",
+    "moe.tsiyuki.core": ">=0.1.0"
+  }
+}

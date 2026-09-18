@@ -1,0 +1,74 @@
+name: Release
+
+# Push a tag that matches package.json, e.g. `git tag v2.0.0 && git push origin v2.0.0`.
+# The workflow builds a VPM zip and a .unitypackage, publishes a GitHub Release,
+# then asks tsiyukino/vpm-repos to rebuild the VPM listing.
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: src
+
+      - name: Read package.json
+        id: pkg
+        run: |
+          echo "name=$(jq -r .name src/package.json)" >> "$GITHUB_OUTPUT"
+          echo "version=$(jq -r .version src/package.json)" >> "$GITHUB_OUTPUT"
+
+      - name: Check tag matches package version
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          if [ "${GITHUB_REF_NAME#v}" != "${{ steps.pkg.outputs.version }}" ]; then
+            echo "Tag ${GITHUB_REF_NAME} does not match package.json version ${{ steps.pkg.outputs.version }}" >&2
+            exit 1
+          fi
+
+      - name: Stage package
+        run: |
+          mkdir -p "Packages/${{ steps.pkg.outputs.name }}"
+          rsync -a --exclude '.git' --exclude '.github' --exclude '.gitignore' --exclude '.gitattributes' \
+            src/ "Packages/${{ steps.pkg.outputs.name }}/"
+          find Packages/ -name '*.meta' > metaList
+
+      - name: Create VPM zip
+        working-directory: Packages/${{ steps.pkg.outputs.name }}
+        run: zip -r "$GITHUB_WORKSPACE/${{ steps.pkg.outputs.name }}-${{ steps.pkg.outputs.version }}.zip" .
+
+      - name: Create .unitypackage
+        uses: pCYSl5EDgo/create-unitypackage@v1.2.3
+        with:
+          package-path: ${{ steps.pkg.outputs.name }}-${{ steps.pkg.outputs.version }}.unitypackage
+          include-files: metaList
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.pkg.outputs.version }}
+          name: ${{ steps.pkg.outputs.name }} ${{ steps.pkg.outputs.version }}
+          files: |
+            ${{ steps.pkg.outputs.name }}-${{ steps.pkg.outputs.version }}.zip
+            ${{ steps.pkg.outputs.name }}-${{ steps.pkg.outputs.version }}.unitypackage
+            src/package.json
+
+      # Optional: needs a VPM_LISTING_TOKEN secret that may dispatch workflows on
+      # tsiyukino/vpm-repos. Without it, run "Build Repo Listing" there manually.
+      - name: Rebuild VPM listing
+        env:
+          GH_TOKEN: ${{ secrets.VPM_LISTING_TOKEN }}
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "VPM_LISTING_TOKEN not set; skipping listing rebuild."
+            exit 0
+          fi
+          gh api repos/tsiyukino/vpm-repos/dispatches -f event_type=package-released
