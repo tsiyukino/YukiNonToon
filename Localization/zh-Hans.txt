@@ -101,3 +101,4 @@ feature.uv_animation = 不支持 UV 滚动 / 旋转动画
 feature.clipping_canceller = 不支持穿模抵消（Clipping Canceller）
 feature.mask_full = 需要的遮罩超过 4 张，最不重要的一张改用白色
 feature.override = 已应用 {0} 个手动调整的值
+menu.no_avatar = 请先在 Hierarchy 中选中一个模型（或模型里的任意物体）。

@@ -101,3 +101,4 @@ feature.uv_animation = UV scroll / rotation animation is not supported
 feature.clipping_canceller = Clipping canceller is not supported
 feature.mask_full = More than four masks needed; the least important one uses white
 feature.override = {0} hand-tuned value(s) applied
+menu.no_avatar = Select an avatar (or any object inside it) in the Hierarchy first.

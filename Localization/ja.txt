@@ -101,3 +101,4 @@ feature.uv_animation = UV スクロール / 回転アニメーションには未
 feature.clipping_canceller = クリッピングキャンセラーには未対応
 feature.mask_full = 必要なマスクが 4 枚を超えたため、最も重要度の低いものは白を使用
 feature.override = 手動調整した値を {0} 件適用
+menu.no_avatar = 先に Hierarchy でアバター（またはその中のオブジェクト）を選択してください。
