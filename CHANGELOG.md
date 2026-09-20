@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased] — 0.1.1
+
+### Changed
+- `TextureBaker` and `Pixels` now live in TsiYuki Core, which requires core 0.2.0. Conversion output
+  is byte-for-byte what it was.
+
 ## [Unreleased]
 
 ### Added
