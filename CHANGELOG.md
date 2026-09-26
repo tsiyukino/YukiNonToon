@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.2] - 2026-09-26
+
+### Changed
+- `TextureBaker` and `Pixels` now come from TsiYuki Core Texture, the texture part of TsiYuki Core. Conversion
+  output is unchanged. Requires TsiYuki Core 0.4.0 and TsiYuki Core Texture 0.1.0.
+
 ## [0.1.1] - 2026-09-21
 
 ### Changed

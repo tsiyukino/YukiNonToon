@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using TsiYuki.Core.Editor;
+using TsiYuki.Core.Textures.Editor;
 using UnityEngine;
 
 namespace TsiYuki.NonToon.Editor
